@@ -51,14 +51,28 @@ class Student:
                 return
             
         def addData():
-            with open('Sample.csv', "a", newline="") as file:
+            with open('SIS.csv', "a", newline="") as file:
                 csvfile = csv.writer(file)
                 if StudentID.get()=="" or Firstname.get()=="" or Surname.get()=="" or Yearlevel.get()=="":
                     tkinter.messagebox.showinfo("Student Information System","Please fill in the box.")
                 else:
-                    csvfile.writerow([StudentID.get(), Firstname.get(), Midname.get(), Surname.get(), Course.get(), Yearlevel.get(), Gender.get()])
-                    tkinter.messagebox.showinfo("Student Information System", "Added Successfully")
-            displayData()
+                    ID = StudentID.get()
+                    ID_list = []
+                    for i in ID:
+                        ID_list.append(i)
+                    if "-" in ID_list:
+                        x = ID.split("-")
+                        y = x[0]
+                        n = x[1]
+                        if y.isdigit()==False or n.isdigit()==False:
+                            tkinter.messagebox.showerror("Student Information System", "Invalid ID Number")
+                        else:
+                            self.data[StudentID.get()] = {'Firstname': Firstname.get(), 'Midname': Midname.get(), 'Surname': Surname.get(), 'Course': Course.get(),'Yearlevel': Yearlevel.get(), 'Gender': Gender.get()}
+                            self.saveData()
+                            tkinter.messagebox.showinfo("Student Information System", "Recorded Successfully")
+                            Clear()
+                    else:
+                        tkinter.messagebox.showerror("Student Information System", "Invalid ID Number")    
 
     
         def Clear():
