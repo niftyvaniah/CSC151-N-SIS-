@@ -50,6 +50,7 @@ class Student:
                 root.destroy()
                 return
             
+        
         def addData():
             with open('SIS.csv', "a", newline="") as file:
                 csvfile = csv.writer(file)
@@ -65,14 +66,26 @@ class Student:
                         y = x[0]
                         n = x[1]
                         if y.isdigit()==False or n.isdigit()==False:
-                            tkinter.messagebox.showerror("Student Information System", "Invalid ID Number")
+                            try:
+                                tkinter.messagebox.showerror("Student Information System", "ID Number is INVALID")
+                            except:
+                                pass
+                        elif y==" " or n==" ":
+                            try:
+                                tkinter.messagebox.showerror("Student Information System", "ID Number is INVALID")
+                            except:
+                                pass
                         else:
-                            self.data[StudentID.get()] = {'Firstname': Firstname.get(), 'Midname': Midname.get(), 'Surname': Surname.get(), 'Course': Course.get(),'Yearlevel': Yearlevel.get(), 'Gender': Gender.get()}
-                            self.saveData()
-                            tkinter.messagebox.showinfo("Student Information System", "Recorded Successfully")
-                            Clear()
+                            if ID in self.data:
+                                tkinter.messagebox.showinfo("Student Information System","Student ID is already RECORDED")
+                            else:
+                                self.data[StudentID.get()] = {'Firstname': Firstname.get(), 'Midname': Midname.get(), 'Surname': Surname.get(), 'Course': Course.get(),'Yearlevel': Yearlevel.get(), 'Gender': Gender.get()}
+                                self.saveData()
+                                tkinter.messagebox.showinfo("Student Information System", "Student Information is Recorded Successfully")
+                                Clear()
                     else:
-                        tkinter.messagebox.showerror("Student Information System", "Invalid ID Number")    
+                        tkinter.messagebox.showerror("Student Information System", "ID Number is INVALID")      
+                displayData()
 
     
         def Clear():
@@ -171,6 +184,8 @@ class Student:
         self.lblStdID.grid(row=1, column=0,padx=5,pady=5, sticky="w")
         self.txtStdID = Entry(ManageFrame, font=("Palatino Linotype",13,"normal"),textvariable=StudentID, relief=GROOVE, width=31)
         self.txtStdID.grid(row=1, column=1)
+        self.txtStdID.insert(0, "YYYY-NNNN")
+        self.txtStdID.grid(row=1, column=1)
 
         self.lblFirstname = Label(ManageFrame,font=("Palatino Linotype",15,"bold"),text="First Name:", padx=2, pady=2, bg="#ecc19c", fg="teal")
         self.lblFirstname.grid(row=2, column=0,padx=5,pady=5, sticky="w")
@@ -206,12 +221,8 @@ class Student:
 
         #-------------Button Widget---------
 
-        self.btnAddData = Button(ButtonFrame, text="Submit", font=("Palatino Linotype",10,"bold"),bg="#187173", fg="white", height=1, width=12, bd=4,command=addData)
+        self.btnAddData = Button(ButtonFrame, text="Add", font=("Palatino Linotype",10,"bold"),bg="#187173", fg="white", height=1, width=12, bd=4,command=addData)
         self.btnAddData.grid(row=0, column=0, padx=15, pady=15)
-
-        self.btnDisplayData = Button(ButtonFrame, text="Edit", font=("Palatino Linotype",10,"bold"),bg="#187173", fg="white", height=1, width=12, bd=4,command=editData
-                                     )
-        self.btnDisplayData.grid(row=0, column=1, padx=15, pady=15)
 
         self.btnUpdateData = Button(ButtonFrame, text="Update", font=("Palatino Linotype",10,"bold"),bg="#187173", fg="white", height=1, width=12, bd=4, command=updateData)
         self.btnUpdateData.grid(row=0, column=2, padx=15, pady=15)
@@ -234,6 +245,9 @@ class Student:
 
         self.btnSearch = Button(DetailFrame, text="Search",font=("Palatino Linotype",10,"bold"),bg="#187173", fg="white", height=1, width=12, bd=4, command=search)
         self.btnSearch.grid(row=1, column=2,padx=15, pady=15)
+        
+        self.btnDisplayData = Button(DetailFrame, text="Select", font=("Palatino Linotype",10,"bold"),bg="#187173", fg="white", height=1, width=12, bd=4,command=editData)
+        self.btnDisplayData.grid(row=1, column=3, padx=15, pady=15)
         
         TableFrame=Frame(DetailFrame, bd=4,relief=RIDGE,bg='#ecc19c')
         TableFrame.place(x=10,y=80, width=790, height=450)
